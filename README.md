@@ -10,6 +10,9 @@ An auto-clicker available for Steam `Banana` Game
 
 - `F8` to toggle the autoclicker
 
+## Build
+
+- `cargo build --release` to build the program
 
 ## Dependencies
 
