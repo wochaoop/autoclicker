@@ -11,14 +11,22 @@ fn main() {
 
     // 启动点击线程
     thread::spawn(move || {
-        let mut enigo = Enigo::new();
+        let settings = Settings {
+            windows_dw_extra_info: Some(EVENT_MARKER as usize),
+            release_keys_when_dropped: true,
+            ..Default::default()
+        };
+        let mut enigo = Enigo::new(&settings).unwrap();
         loop {
             let is_clicking = *clicking_clone.lock().unwrap();
             if is_clicking {
-                enigo.mouse_click(MouseButton::Left);
-                enigo.mouse_click(MouseButton::Middle);
-                enigo.mouse_click(MouseButton::Right);
+                enigo.button(Button::Left, Direction::Press).unwrap();
+                enigo.button(Button::Middle, Direction::Press).unwrap();
+                enigo.button(Button::Right, Direction::Press).unwrap();
                 thread::sleep(Duration::from_millis(1));
+                enigo.button(Button::Left, Direction::Release).unwrap();
+                enigo.button(Button::Middle, Direction::Release).unwrap();
+                enigo.button(Button::Right, Direction::Release).unwrap();
             }
         }
     });
